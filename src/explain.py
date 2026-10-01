@@ -27,7 +27,8 @@ If output/phase4_reality_check.csv exists, its labels and sources are merged
 into the report.
 
 Run:  .venv/bin/python src/explain.py
-Writes: output/phase4_explanations.md, output/phase4_paths.csv
+Writes: output/phase4_explanations.md, output/phase4_paths.csv,
+        output/phase4_contributions.csv
 """
 
 import numpy as np
@@ -126,8 +127,10 @@ def main():
     all_paths = []
     for rank, (i, row) in enumerate(top.iterrows(), start=1):
         drug, disease = row["compound"], row["disease"]
+        # Highest specificity first; ties broken alphabetically so the order is
+        # the same on every run (Python's set order changes between runs).
         paths = find_paths(drug, disease, e, degree, name).sort_values(
-            "weight", ascending=False, kind="stable")
+            ["weight", "path"], ascending=[False, True], kind="stable")
         paths.insert(0, "rank", rank)
         all_paths.append(paths)
         c = contrib.loc[i]
@@ -166,6 +169,10 @@ def main():
                   "this drug for this disease; *some published evidence* = papers but no human "
                   "trial; *no evidence found* = the searches linked in that row found nothing "
                   "relevant (not proof that it can't work).", "",
+                  "Note on the psoriasis predictions: topical steroid FDA labels usually say "
+                  "\"corticosteroid-responsive dermatoses\" rather than naming psoriasis, so those "
+                  "uses may already be standard practice even though the strict rule above counts "
+                  "them as \"in clinical trials\".", "",
                   "Sources were searched on the date in the CSV through the public openFDA, "
                   "ClinicalTrials.gov (API v2) and PubMed (E-utilities) interfaces. In an automated "
                   "link check, PubMed article pages answered HTTP 203 (likely bot protection) "
@@ -179,6 +186,12 @@ def main():
         lines.append("")
 
     pd.concat(all_paths).to_csv(OUTPUT_DIR / "phase4_paths.csv", index=False)
+    contrib_out = contrib.round(4).copy()
+    contrib_out.insert(0, "rank", range(1, len(top) + 1))
+    contrib_out.insert(1, "drug", top["compound"].map(name).to_numpy())
+    contrib_out.insert(2, "disease_name", top["disease"].map(name).to_numpy())
+    contrib_out["intercept"] = round(intercept, 4)
+    contrib_out.to_csv(OUTPUT_DIR / "phase4_contributions.csv", index=False)
     (OUTPUT_DIR / "phase4_explanations.md").write_text("\n".join(lines))
 
     # Short console summary

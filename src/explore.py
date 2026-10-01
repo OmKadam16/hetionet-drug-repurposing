@@ -20,6 +20,8 @@ matplotlib.use("Agg")  # draw charts to files, without opening a window
 import matplotlib.pyplot as plt
 import pandas as pd
 
+import plot_style as style
+
 # --- File locations -------------------------------------------------------
 # Path(__file__) is this script; .parent.parent is the project folder.
 PROJECT_DIR = Path(__file__).resolve().parent.parent
@@ -99,13 +101,19 @@ def main():
     # --- 5. Charts ----------------------------------------------------------
     OUTPUT_DIR.mkdir(exist_ok=True)
 
+    style.setup()
+
     # Chart 1: node counts by type (horizontal bars are easier to read
     # when the labels are long words like "Biological Process").
+    counts = node_counts.sort_values()
     fig, ax = plt.subplots(figsize=(8, 5))
-    node_counts.sort_values().plot.barh(ax=ax, color="#4C72B0")
-    ax.set_title("Hetionet v1.0: number of nodes per type")
+    ax.barh(counts.index, counts.values, color=style.BLUE, height=0.7)
+    for y, v in enumerate(counts.values):
+        ax.text(v, y, f" {v:,}", va="center", fontsize=9, color=style.TEXT_SECONDARY)
+    ax.set_title("Hetionet v1.0: nodes per type", loc="left")
     ax.set_xlabel("Number of nodes")
-    ax.set_ylabel("")
+    ax.set_xlim(0, counts.max() * 1.15)
+    style.tidy(ax)
     fig.tight_layout()
     fig.savefig(OUTPUT_DIR / "node_counts_by_type.png", dpi=150)
     plt.close(fig)
@@ -119,14 +127,20 @@ def main():
         + "-> "
         + edge_counts["target_kind"]
     )
-    edge_series = pd.Series(edge_counts["count"].values, index=edge_labels)
+    edge_series = pd.Series(edge_counts["count"].values, index=edge_labels).sort_values()
 
     fig, ax = plt.subplots(figsize=(9, 9))
-    edge_series.sort_values().plot.barh(ax=ax, color="#55A868")
+    ax.barh(edge_series.index, edge_series.values, color=style.BLUE, height=0.7)
+    for y, (label, v) in enumerate(edge_series.items()):
+        note = "  <- treatments we predict" if f"-{TREATS_METAEDGE}->" in label else ""
+        ax.text(v, y, f" {v:,}{note}", va="center", fontsize=8,
+                color=style.TEXT if note else style.TEXT_SECONDARY,
+                fontweight="bold" if note else "normal")
     ax.set_xscale("log")
-    ax.set_title("Hetionet v1.0: number of edges per type (log scale)")
+    ax.set_xlim(right=edge_series.max() * 5)  # room for the value labels
+    ax.set_title("Hetionet v1.0: edges per type (log scale)", loc="left")
     ax.set_xlabel("Number of edges (log scale)")
-    ax.set_ylabel("")
+    style.tidy(ax)
     fig.tight_layout()
     fig.savefig(OUTPUT_DIR / "edge_counts_by_type.png", dpi=150)
     plt.close(fig)

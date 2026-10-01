@@ -1,0 +1,54 @@
+split seed 0: train 604 pos + 6040 neg (2 test treats were drawn as negatives); eval 205,590 pairs, 149 positives
+  check: AUPRC of untrained sum of 3 baseline scores = 0.0961
+  check: share with popularity 0 -> training positives raw 0.00, leave-one-out 0.38; test positives 0.42
+split seed 1: train 604 pos + 6040 neg (5 test treats were drawn as negatives); eval 205,590 pairs, 146 positives
+  check: AUPRC of untrained sum of 3 baseline scores = 0.1171
+split seed 2: train 604 pos + 6040 neg (8 test treats were drawn as negatives); eval 205,590 pairs, 143 positives
+  check: AUPRC of untrained sum of 3 baseline scores = 0.0924
+split seed 3: train 604 pos + 6040 neg (3 test treats were drawn as negatives); eval 205,590 pairs, 148 positives
+  check: AUPRC of untrained sum of 3 baseline scores = 0.0746
+split seed 4: train 604 pos + 6040 neg (7 test treats were drawn as negatives); eval 205,590 pairs, 144 positives
+  check: AUPRC of untrained sum of 3 baseline scores = 0.0739
+
+=== Mean +/- std over 5 splits ===
+                             AUROC              AUPRC               P@20              P@100
+method                                                                                     
+random           0.5105 +/- 0.0302  0.0007 +/- 0.0001  0.0000 +/- 0.0000  0.0000 +/- 0.0000
+popularity       0.7666 +/- 0.0081  0.0199 +/- 0.0031  0.0500 +/- 0.0707  0.0560 +/- 0.0195
+shared_genes     0.7467 +/- 0.0259  0.0066 +/- 0.0017  0.0700 +/- 0.0274  0.0300 +/- 0.0100
+similar_drugs    0.7325 +/- 0.0259  0.0297 +/- 0.0071  0.0900 +/- 0.0418  0.0820 +/- 0.0148
+baselines_only   0.9181 +/- 0.0087  0.1118 +/- 0.0252  0.4200 +/- 0.0837  0.2200 +/- 0.0534
+embeddings_only  0.8882 +/- 0.0079  0.0159 +/- 0.0061  0.0600 +/- 0.0548  0.0380 +/- 0.0110
+full             0.9433 +/- 0.0113  0.1175 +/- 0.0383  0.4300 +/- 0.1151  0.2120 +/- 0.0653
+
+=== full minus popularity, per split ===
+AUROC  diffs: +0.1910, +0.1637, +0.1789, +0.1656, +0.1840  mean +0.1766 +/- 0.0118  full better in 5/5
+AUPRC  diffs: +0.0724, +0.1338, +0.0744, +0.1413, +0.0662  mean +0.0976 +/- 0.0367  full better in 5/5
+P@20   diffs: +0.2000, +0.5500, +0.2000, +0.5500, +0.4000  mean +0.3800 +/- 0.1754  full better in 5/5
+P@100  diffs: +0.1700, +0.1800, +0.0900, +0.2400, +0.1000  mean +0.1560 +/- 0.0619  full better in 5/5
+
+=== full minus baselines_only, per split ===
+AUROC  diffs: +0.0304, +0.0112, +0.0205, +0.0324, +0.0313  mean +0.0252 +/- 0.0092  full better in 5/5
+AUPRC  diffs: -0.0207, +0.0075, -0.0092, +0.0496, +0.0012  mean +0.0057 +/- 0.0268  full better in 3/5
+P@20   diffs: -0.0500, +0.0000, -0.0500, +0.1000, +0.0500  mean +0.0100 +/- 0.0652  full better in 2/5
+P@100  diffs: +0.0000, +0.0000, -0.1000, +0.0400, +0.0200  mean -0.0080 +/- 0.0540  full better in 2/5
+
+=== Top 15 NEW predictions (not known treats/palliates) from the full model ===
+                  drug       disease_name  score  popularity  shared_genes  similar_drugs
+Fluocinolone Acetonide             asthma  0.999          74             2             11
+          Daunorubicin      breast cancer  0.999          29             7              3
+            Budesonide  atopic dermatitis  0.999          32             0             11
+        Hydrocortisone hematologic cancer  0.999         408             3              5
+              Desonide             asthma  0.998          37             1             12
+          Metipranolol       hypertension  0.998          68             2              5
+           Estropipate    prostate cancer  0.998          21             5              5
+            Paclitaxel    prostate cancer  0.998          84             5              2
+            Budesonide          psoriasis  0.998          42             0             10
+           Vincristine      breast cancer  0.998         203             5              2
+           Levobunolol       hypertension  0.997          68             2              5
+            Mometasone          psoriasis  0.997          63             0             10
+           Nateglinide       hypertension  0.997          68             5              4
+          Isoprenaline       hypertension  0.997          68             5              3
+              Desonide          psoriasis  0.997          21             0             10
+
+Final model weights for the 3 baseline features: popularity +0.66, shared_genes +0.56, similar_drugs +0.96

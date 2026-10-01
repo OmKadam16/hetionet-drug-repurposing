@@ -1,0 +1,16 @@
+rank,drug,disease_name,popularity,shared_genes,similar_drugs,embedding,intercept
+1,Fluocinolone Acetonide,asthma,2.0518,1.2266,7.2518,-0.2081,-3.6998
+2,Daunorubicin,breast cancer,1.5577,2.5315,3.9491,2.2464,-3.6998
+3,Budesonide,atopic dermatitis,1.6091,-0.2349,7.2518,1.6238,-3.6998
+4,Hydrocortisone,hematologic cancer,2.9663,1.6094,5.168,0.4606,-3.6998
+5,Desonide,asthma,1.6852,0.6872,7.4925,0.275,-3.6998
+6,Metipranolol,hypertension,2.0068,1.2266,5.168,1.5828,-3.6998
+7,Estropipate,prostate cancer,1.3905,2.1488,5.168,1.1683,-3.6998
+8,Paclitaxel,prostate cancer,2.1192,2.1488,3.0842,2.4525,-3.6998
+9,Budesonide,psoriasis,1.7518,-0.2349,6.9903,1.2699,-3.6998
+10,Vincristine,breast cancer,2.5912,2.1488,3.0842,1.8729,-3.6998
+11,Levobunolol,hypertension,2.0068,1.2266,5.168,1.2593,-3.6998
+12,Mometasone,psoriasis,1.9662,-0.2349,6.9903,0.8883,-3.6998
+13,Nateglinide,hypertension,2.0068,2.1488,4.6199,0.7741,-3.6998
+14,Isoprenaline,hypertension,2.0068,2.1488,3.9491,1.4271,-3.6998
+15,Desonide,psoriasis,1.3905,-0.2349,6.9903,1.3752,-3.6998

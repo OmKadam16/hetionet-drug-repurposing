@@ -17,10 +17,11 @@ Needs data/split/ from split.py.  Run:  .venv/bin/python src/baselines.py
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.metrics import average_precision_score, roc_auc_score
+
+import plot_style as style
 
 from common import (
     EVAL_PAIRS_FILE,
@@ -169,23 +170,17 @@ def main():
     OUTPUT_DIR.mkdir(exist_ok=True)
     results.to_csv(OUTPUT_DIR / "baseline_results.csv", index=False)
 
-    # --- Chart: one small panel per metric -----------------------------------
+    # --- Chart: one panel per metric ----------------------------------------
+    style.setup()
     metrics = ["AUROC", "AUPRC", "P@20", "P@100"]
-    colors = ["#999999", "#4C72B0", "#55A868", "#C44E52"]
-    fig, axes = plt.subplots(1, 4, figsize=(14, 4))
-    for ax, metric in zip(axes, metrics):
-        values = results[metric]
-        ax.bar(results["baseline"], values, color=colors)
-        for x, v in enumerate(values):
-            ax.text(x, v, f"{v:.3f}", ha="center", va="bottom", fontsize=8)
-        ax.set_title(metric)
-        ax.set_ylim(0, max(values.max() * 1.2, 0.05))
-        ax.tick_params(axis="x", rotation=45)
-    axes[0].axhline(0.5, color="black", linestyle="--", linewidth=0.8)  # AUROC chance
-    fig.suptitle("Baselines on 151 held-out treatments (higher is better)")
-    fig.tight_layout()
-    fig.savefig(OUTPUT_DIR / "baseline_comparison.png", dpi=150)
-    plt.close(fig)
+    style.metric_panels(
+        names=list(results["baseline"]),
+        roles=["reference" if b == "random" else "baseline" for b in results["baseline"]],
+        means={m: list(results[m]) for m in metrics},
+        title=f"Phase 2 baselines on {labels.sum()} held-out treatments (one split, seed 42)",
+        path=OUTPUT_DIR / "baseline_comparison.png",
+        note="Higher is better. AUPRC of random guessing = share of positives.",
+    )
     print(f"\nSaved results to {OUTPUT_DIR}/baseline_results.csv and baseline_comparison.png")
 
     # --- Top 10 predictions from the best baseline (by AUPRC) ----------------

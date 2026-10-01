@@ -152,7 +152,7 @@ Top 3 paths:
 - [B similar drug] Budesonide -resembles- Fluocinonide -treats-> psoriasis  (specificity 0.094)
 - [B similar drug] Budesonide -resembles- Clobetasol propionate -treats-> psoriasis  (specificity 0.077)
 
-**Reality check: in clinical trials**. Double-blind trials of budesonide ointment in psoriasis were published in 1981 and 1982. No registered trials found on ClinicalTrials.gov.
+**Reality check: in clinical trials**. Double-blind trials of budesonide ointment in psoriasis were published in 1981 and 1982. No registered trials found on ClinicalTrials.gov. Topical steroid FDA labels usually say 'corticosteroid-responsive dermatoses' rather than naming psoriasis, so topical steroids for psoriasis may already be standard practice even though the strict labeling rule counts this as 'in clinical trials'. Caveat: the US budesonide labels found are nasal, inhaled, oral or rectal, not topical.
 Sources: https://pubmed.ncbi.nlm.nih.gov/7016629/ https://pubmed.ncbi.nlm.nih.gov/6751704/
 
 ## 10. Vincristine → breast cancer  (score 0.9975)
@@ -203,7 +203,7 @@ Top 3 paths:
 - [B similar drug] Mometasone -resembles- Fluocinonide -treats-> psoriasis  (specificity 0.094)
 - [D similar disease] Mometasone -treats-> atopic dermatitis -resembles- psoriasis  (specificity 0.089)
 
-**Reality check: in clinical trials**. Completed phase 4 and phase 2 trials in psoriasis (e.g. Elocon/mometasone vs fluticasone). FDA label covers 'corticosteroid-responsive dermatoses' without naming psoriasis, so I did not label it approved.
+**Reality check: in clinical trials**. Completed phase 4 and phase 2 trials in psoriasis (e.g. Elocon/mometasone vs fluticasone). FDA label covers 'corticosteroid-responsive dermatoses' without naming psoriasis, so I did not label it approved. Topical steroid FDA labels usually say 'corticosteroid-responsive dermatoses' rather than naming psoriasis, so this may already be standard practice even though the strict labeling rule counts it as 'in clinical trials'. (The mometasone cream label linked here uses exactly that wording.)
 Sources: https://clinicaltrials.gov/study/NCT00763529 https://clinicaltrials.gov/study/NCT00845481 https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=031283ed-988b-4698-8a2e-00f3d41c0f71
 
 ## 13. Nateglinide → hypertension  (score 0.9971)
@@ -254,12 +254,14 @@ Top 3 paths:
 - [B similar drug] Desonide -resembles- Fluocinonide -treats-> psoriasis  (specificity 0.094)
 - [D similar disease] Desonide -treats-> atopic dermatitis -resembles- psoriasis  (specificity 0.089)
 
-**Reality check: in clinical trials**. A randomized clinical comparison of desonide vs alclometasone ointments in psoriasis was published in 1982. Desonide is a topical steroid (FDA labels).
+**Reality check: in clinical trials**. A randomized clinical comparison of desonide vs alclometasone ointments in psoriasis was published in 1982. Desonide is a topical steroid (FDA labels). Topical steroid FDA labels usually say 'corticosteroid-responsive dermatoses' rather than naming psoriasis, so this may already be standard practice even though the strict labeling rule counts it as 'in clinical trials'. (The desonide cream label linked here uses exactly that wording.)
 Sources: https://pubmed.ncbi.nlm.nih.gov/6754511/ https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=0665dd04-1d0b-45bf-90e4-c6e0bd90956d
 
 ## Summary of the reality check
 
 Label rules: *already used/approved* = an official label lists the use; *in clinical trials* = at least one registered or published human trial of this drug for this disease; *some published evidence* = papers but no human trial; *no evidence found* = the searches linked in that row found nothing relevant (not proof that it can't work).
+
+Note on the psoriasis predictions: topical steroid FDA labels usually say "corticosteroid-responsive dermatoses" rather than naming psoriasis, so those uses may already be standard practice even though the strict rule above counts them as "in clinical trials".
 
 Sources were searched on the date in the CSV through the public openFDA, ClinicalTrials.gov (API v2) and PubMed (E-utilities) interfaces. In an automated link check, PubMed article pages answered HTTP 203 (likely bot protection) instead of 200; their IDs and titles were confirmed through PubMed's API.
 

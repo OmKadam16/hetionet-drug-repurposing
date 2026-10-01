@@ -28,7 +28,6 @@ Needs data/embeddings/ from embed.py.  Run:  .venv/bin/python src/model.py
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
@@ -37,6 +36,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 from baselines import precision_at_k, rank_order, shared_gene_scores, similar_drug_scores
+import plot_style as style
 from common import OUTPUT_DIR, SPLIT_SEEDS, edges_of_type, load_edges, load_nodes
 from embed import load_embeddings
 from split import make_split, pair_key
@@ -53,6 +53,15 @@ METHODS = [
     "full",
 ]
 METRICS = ["AUROC", "AUPRC", "P@20", "P@100"]
+
+LOG_LINES = []
+
+
+def log(*parts):
+    """print() that also keeps the line, so main() can save it to output/phase3_log.txt."""
+    line = " ".join(str(p) for p in parts)
+    print(line)
+    LOG_LINES.append(line)
 
 
 # ---------------------------------------------------------------------------
@@ -123,6 +132,31 @@ def sample_training_pairs(all_pairs, treats, excluded_keys, seed):
 
 
 # ---------------------------------------------------------------------------
+# Sanity checks (written to the log so every number in the docs has a source)
+# ---------------------------------------------------------------------------
+
+
+def sanity_checks(seed, train, test, eval_pairs, graph):
+    """Two checks from Phase 3, on this split's full Phase 2-style eval set.
+
+    1. Untrained combination: AUPRC of simply adding up the 3 standardized
+       baseline scores. If this is already high, the learned model's gain
+       comes from the features complementing each other, not from training.
+    2. Leave-one-out check (split 0 only): share of pairs with popularity 0.
+    """
+    f = np.log1p(baseline_features(eval_pairs, train, graph, set()))
+    z = (f - f.mean()) / f.std()
+    ap = average_precision_score(eval_pairs["label"], z.sum(axis=1))
+    log(f"  check: AUPRC of untrained sum of 3 baseline scores = {ap:.4f}")
+    if seed == 0:
+        raw = baseline_features(train, train, graph, set())["popularity"]
+        loo = baseline_features(train, train, graph, set(pair_key(train)))["popularity"]
+        tst = baseline_features(test, train, graph, set())["popularity"]
+        log(f"  check: share with popularity 0 -> training positives raw {(raw == 0).mean():.2f}, "
+            f"leave-one-out {(loo == 0).mean():.2f}; test positives {(tst == 0).mean():.2f}")
+
+
+# ---------------------------------------------------------------------------
 # One split
 # ---------------------------------------------------------------------------
 
@@ -140,6 +174,7 @@ def evaluate(labels, scores, seed):
 def run_split(seed, nodes, edges, all_pairs, cpd_keys):
     train, test, eval_pairs = make_split(nodes, edges, seed)
     graph = edges[edges["metaedge"] != "CtD"]  # treats info comes only from `train`
+    full_eval_pairs = eval_pairs
     train_keys = set(pair_key(train))
     vectors = load_embeddings(f"seed{seed}")  # walk seed = split seed
 
@@ -165,9 +200,10 @@ def run_split(seed, nodes, edges, all_pairs, cpd_keys):
         clf = make_classifier().fit(X_train[cols], y_train)
         scores[name] = clf.predict_proba(X_eval[cols])[:, 1]
 
-    print(f"split seed {seed}: train {int(y_train.sum())} pos + {int((y_train == 0).sum())} neg "
+    log(f"split seed {seed}: train {int(y_train.sum())} pos + {int((y_train == 0).sum())} neg "
           f"({sampled_test_pos} test treats were drawn as negatives); "
           f"eval {len(eval_pairs):,} pairs, {int(y_eval.sum())} positives")
+    sanity_checks(seed, train, test, full_eval_pairs, graph)
     return [{"seed": seed, "method": m, **evaluate(y_eval, scores[m], seed)} for m in METHODS]
 
 
@@ -227,10 +263,10 @@ def main():
 
     summary = per_split.groupby("method", sort=False)[METRICS].agg(["mean", "std"])
     summary.to_csv(OUTPUT_DIR / "phase3_results.csv")
-    print("\n=== Mean +/- std over 5 splits ===")
+    log("\n=== Mean +/- std over 5 splits ===")
     table = pd.DataFrame({m: summary[(m, "mean")].map("{:.4f}".format) + " +/- "
                           + summary[(m, "std")].map("{:.4f}".format) for m in METRICS})
-    print(table.to_string())
+    log(table.to_string())
 
     # --- 2. Is full better than popularity beyond the noise? -----------------
     # Compare on the SAME split each time (a "paired" comparison): split-to-split
@@ -238,28 +274,24 @@ def main():
     # We also compare full vs baselines_only: do the embeddings add anything?
     wide = per_split.pivot(index="seed", columns="method")
     for other in ["popularity", "baselines_only"]:
-        print(f"\n=== full minus {other}, per split ===")
+        log(f"\n=== full minus {other}, per split ===")
         for metric in METRICS:
             diff = wide[(metric, "full")] - wide[(metric, other)]
-            print(f"{metric:6s} diffs: {', '.join(f'{d:+.4f}' for d in diff)}  "
+            log(f"{metric:6s} diffs: {', '.join(f'{d:+.4f}' for d in diff)}  "
                   f"mean {diff.mean():+.4f} +/- {diff.std():.4f}  full better in {(diff > 0).sum()}/5")
 
     # --- 3. Chart -------------------------------------------------------------
-    colors = ["#999999", "#4C72B0", "#55A868", "#C44E52", "#8172B2", "#CCB974", "#DD8452"]
-    fig, axes = plt.subplots(1, 4, figsize=(16, 4.5))
-    for ax, metric in zip(axes, METRICS):
-        means, stds = summary[(metric, "mean")], summary[(metric, "std")]
-        ax.bar(means.index, means, yerr=stds, capsize=3, color=colors)
-        for x, (m, s) in enumerate(zip(means, stds)):
-            ax.text(x, m + s, f"{m:.3f}", ha="center", va="bottom", fontsize=7)
-        ax.set_title(metric)
-        ax.set_ylim(0, (means + stds).max() * 1.2)
-        ax.tick_params(axis="x", rotation=60)
-    axes[0].axhline(0.5, color="black", linestyle="--", linewidth=0.8)
-    fig.suptitle("Phase 3: mean over 5 random splits (error bars = 1 standard deviation)")
-    fig.tight_layout()
-    fig.savefig(OUTPUT_DIR / "phase3_comparison.png", dpi=150)
-    plt.close(fig)
+    style.setup()
+    style.metric_panels(
+        names=METHODS,
+        roles=["reference" if m == "random" else "model" if m in
+               ("baselines_only", "embeddings_only", "full") else "baseline" for m in METHODS],
+        means={k: list(summary[(k, "mean")]) for k in METRICS},
+        stds={k: list(summary[(k, "std")]) for k in METRICS},
+        title="Phase 3: mean ± standard deviation over 5 random splits",
+        path=OUTPUT_DIR / "phase3_comparison.png",
+        note="Higher is better. Error bars = 1 standard deviation across splits.",
+    )
 
     # --- 4. Final model on the full graph -> new predictions -----------------
     clf, cols, new_pairs, X_new = train_final_model(nodes, edges)
@@ -269,15 +301,20 @@ def main():
     new_pairs["disease_name"] = new_pairs["disease"].map(id_to_name)
     top = new_pairs.sort_values("score", ascending=False).head(15)
     top.to_csv(OUTPUT_DIR / "phase3_top15_new_predictions.csv", index=False)
-    print("\n=== Top 15 NEW predictions (not known treats/palliates) from the full model ===")
-    print(top[["drug", "disease_name", "score"] + BASELINE_FEATURES]
+    log("\n=== Top 15 NEW predictions (not known treats/palliates) from the full model ===")
+    log(top[["drug", "disease_name", "score"] + BASELINE_FEATURES]
           .to_string(index=False, float_format=lambda x: f"{x:.3f}"))
 
     # Which features does the final model lean on? (weights on standardized features)
     weights = pd.Series(clf[-1].coef_[0], index=cols)
-    print("\nFinal model weights for the 3 baseline features:",
+    log("\nFinal model weights for the 3 baseline features:",
           ", ".join(f"{k} {weights[k]:+.2f}" for k in BASELINE_FEATURES))
+
+
+def save_log():
+    (OUTPUT_DIR / "phase3_log.txt").write_text("\n".join(LOG_LINES) + "\n")
 
 
 if __name__ == "__main__":
     main()
+    save_log()

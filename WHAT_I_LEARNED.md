@@ -370,3 +370,47 @@ also produces confident nonsense, because Hetionet has no notion of:
 Ideas for fixing this: penalize popularity directly (or evaluate on drugs and diseases with few
 known treatments), drop or down-weight hub genes, and filter predictions by route of
 administration using an outside source such as the FDA labels.
+
+---
+
+# Overall: what I learned
+
+**The project in one paragraph.** I took Hetionet, a knowledge graph of 47,031 biomedical
+entities and 2.25 million relationships, and asked whether it can rediscover hidden drug
+treatments. A simple logistic regression on graph features found hidden treatments far better
+than a "popular drugs and diseases" baseline. Its AUPRC was 0.118 vs 0.020, it won in all 5 splits, and on average 8.6
+of its top 20 picks were real hidden treatments. When I explained and fact-checked its top 15
+new predictions, about half had real-world support, and about 40% were artifacts a pharmacist
+would reject.
+
+**The lessons I'd tell someone starting a similar project:**
+
+1. **Build the fair test before the model.** Most of the real work was deciding what counts as
+   a positive, a negative and an unknown, and keeping the test answers away from every feature.
+   Leakage comes in two forms: test answers sneaking in, and training examples that look
+   different from what you're trying to find (direct treats links in the walk graph, popularity
+   that counts a pair's own edge).
+2. **Always have dumb baselines.** Popularity uses no biology, yet it was competitive with the
+   biology-based scores. Without it I couldn't say whether the model learned anything real.
+3. **Choose metrics that match the job.** With 1 positive per ~1,400 pairs, AUROC looked
+   great for methods whose top picks were mostly wrong. AUPRC and precision@k measure what a
+   lab would actually test.
+4. **Repeat with different seeds and compare per split.** One split made shared genes look best
+   at top-20 precision; five splits showed that was noise.
+5. **Ablations tell you *why* something works.** The fancy part (DeepWalk embeddings) mostly
+   improved AUROC; combining three simple scores did most of the work. I would not have known
+   that without the baselines-only model.
+6. **A good score is not a discovery.** Checking predictions against FDA labels, trial
+   registries and papers revealed blind spots that no metric showed: skin creams predicted for
+   asthma, eye drops for blood pressure, a receptor *stimulator* mistaken for a *blocker*.
+   Explanations (paths and feature contributions) are what made those mistakes easy to spot.
+7. **Be careful with sources too.** Text matching misread "ocular hypertension", the trial
+   registry expanded my search terms, and one registry entry had a doubtful drug name. Reading
+   the actual record matters.
+8. **Make it reproducible.** Fixed seeds, single-threaded word2vec, deterministic tie-breaking
+   and a fresh-clone test mean anyone can regenerate every number in this project.
+
+**What I'd do next:** evaluate on drugs and diseases with few known treatments (to reward
+non-obvious predictions), penalize popularity, down-weight hub genes, add drug-action direction
+and route of administration from outside sources, and compare against a stronger path-based or
+graph neural network model.
