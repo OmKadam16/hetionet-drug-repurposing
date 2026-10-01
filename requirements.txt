@@ -1,4 +1,6 @@
+# Python 3.13 (gensim 4.4 has no Python 3.14 build yet)
 pandas>=2.0
 numpy>=1.26
 scikit-learn>=1.4
 matplotlib>=3.7
+gensim>=4.4

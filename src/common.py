@@ -22,8 +22,13 @@ TRAIN_FILE = SPLIT_DIR / "train_ctd.tsv"  # 80% of treats edges
 TEST_FILE = SPLIT_DIR / "test_ctd.tsv"  # 20% of treats edges (held out)
 EVAL_PAIRS_FILE = SPLIT_DIR / "eval_pairs.tsv"  # pairs we score + true label
 
+EMBED_DIR = DATA_DIR / "embeddings"  # node vectors learned by embed.py
+
 # One fixed seed for everything random, so results are reproducible.
-RANDOM_SEED = 42
+RANDOM_SEED = 42  # Phase 2 single split
+
+# Phase 3: repeat the whole evaluation over 5 different 80/20 splits.
+SPLIT_SEEDS = [0, 1, 2, 3, 4]
 
 
 def load_nodes():

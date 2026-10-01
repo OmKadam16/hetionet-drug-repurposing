@@ -14,6 +14,11 @@ type, look at the Compound-treats-Disease edges, make summary charts.
 test set, score all Compound × Disease pairs with 4 simple baselines (random,
 popularity, shared genes, similar drugs), report AUROC / AUPRC / precision@k.
 
+**Phase 3 – graph embeddings + model** (done): DeepWalk embeddings (random walks +
+word2vec) learned on Hetionet with all treats edges removed, a logistic regression
+on embedding + baseline features, two ablations, all evaluated over 5 random
+splits (mean ± std). Lists the model's top new candidate pairs.
+
 ## Project layout
 
 ```
@@ -23,13 +28,17 @@ src/         Python code
   explore.py   Phase 1: loads the graph and prints/plots summary statistics
   split.py     Phase 2: train/test split of treats edges + evaluation pairs
   baselines.py Phase 2: scores and evaluates the baselines
+  embed.py     Phase 3: DeepWalk node embeddings (treats-free graph)
+  model.py     Phase 3: logistic regression, ablations, 5-split evaluation
 output/      generated charts
 ```
 
 ## Setup
 
+Requires **Python 3.13** (gensim 4.4 has no Python 3.14 build yet).
+
 ```bash
-python3 -m venv .venv
+python3.13 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ```
 
@@ -52,6 +61,8 @@ Its SHA-256 should be `611f0411ac666be4e0270e54bbca67407e14720bfc3099311f0f5eec2
 .venv/bin/python src/explore.py     # Phase 1
 .venv/bin/python src/split.py       # Phase 2: creates data/split/
 .venv/bin/python src/baselines.py   # Phase 2: writes output/baseline_results.csv
+.venv/bin/python src/embed.py       # Phase 3: ~5 min, writes data/embeddings/
+.venv/bin/python src/model.py       # Phase 3: writes output/phase3_*.csv/png
 ```
 
 ## Data source and license

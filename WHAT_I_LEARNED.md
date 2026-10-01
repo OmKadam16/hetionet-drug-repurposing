@@ -151,3 +151,129 @@ held-out treatment" only means *Hetionet doesn't list it*. It doesn't prove the
 prediction is wrong, and it doesn't prove it's right. This also shows a weakness:
 the method keeps recommending the same kind of drug for the same disease, which is
 "more of the same," not a surprising new use.
+
+---
+
+# Phase 3: what I learned
+
+## Five splits instead of one
+
+One 80/20 split can be lucky or unlucky. I repeated everything over **5 different random
+splits** (seeds 0–4) and report the **mean ± standard deviation**. If two methods' ranges
+overlap a lot, the difference might just be luck. I also compared methods **split by split**
+(a "paired" comparison): some splits are harder than others for every method, and
+comparing on the same split cancels that out.
+
+## Embeddings, in plain words
+
+An **embedding** is a list of numbers (here 64) that describes a node. Nodes in similar
+parts of the graph get similar lists. That turns "where a node sits in the graph" into
+numbers that a normal machine-learning model can use.
+
+I used **DeepWalk** (node2vec with its two extra settings at their neutral value):
+
+1. **Random walks:** start at a node and keep hopping to a random neighbor, 40 steps,
+   10 walks from every node. Nodes that are close in the graph keep appearing in the
+   same walks, so the walks record each node's **neighborhood**.
+2. **word2vec:** treat each walk as a sentence and each node as a word. word2vec gives
+   similar vectors to words that appear near each other, so here nodes that appear near
+   each other in walks get similar vectors.
+
+Practical details: word2vec runs on one CPU thread, so results are identical on every
+run (I checked this). It takes about 50 s per embedding and ~760 MB peak memory on my M3
+MacBook Air, 255 s for all five. gensim printed ~20 harmless-looking internal warnings per
+run, affecting at most a handful of the roughly billion small updates. 1,873 nodes (including 14
+compounds and 1 disease) have no edges once treats edges are removed. They can't be walked
+to, so they get all-zero vectors.
+
+**Python version:** gensim 4.4 has no Python 3.14 build yet (pip silently installed a 2014
+version that crashes), so the project now uses Python 3.13. Phase 1–2 results came out
+identical on 3.13.
+
+## A second kind of leakage: shortcuts in the training data
+
+Phase 2's leakage was about **test answers** sneaking in. Phase 3 has a subtler kind:
+**training examples that look different from the cases we want to find**, so the model
+learns a shortcut that only works on training data.
+
+- **In the graph:** if training treats edges stay in the random-walk graph, every training
+  treatment is a *direct link*, and its drug and disease get very close vectors.
+  Hidden test treatments never have that link. The model would learn "directly linked =
+  treats", a rule that can never fire on the pairs we actually want to discover. So I
+  removed **all** Compound-treats-Disease edges from the walk graph. The embeddings then
+  describe only biology (genes, pathways, side effects...).
+- **In the popularity feature:** a training treatment counts *itself* in its drug's and
+  disease's treatment counts, so its popularity is always at least 1. With split 0, **0%**
+  of training positives had popularity 0, versus **42%** of test positives. With a
+  **leave-one-out** correction (don't count the pair's own edge), **38%** of training
+  positives have popularity 0, much closer to the test set. (Shared genes uses no
+  treats edges, and similar drugs only uses *other* drugs' treatments, so they need no
+  correction.)
+
+Treatment information now enters the model **only** through the three baseline
+features, all computed from training treatments with the leave-one-out rule.
+
+## The model
+
+- **Features** for a pair: drug vector × disease vector, element by element (64 numbers;
+  large when both vectors are large in the same directions, a learnable "closeness"),
+  plus the 3 baseline scores (log-transformed because counts are very skewed).
+- **Logistic regression:** a weighted sum of the features turned into a 0–1 score. Each
+  weight says how much a feature pushes a pair towards "treats".
+- **Training data:** 604 training treatments as positives, 6,040 random other pairs as
+  negatives (10 per positive).
+- **"Negatives" that might be treatments:** a random pair with no treats edge is not
+  proven to be useless. It may be a treatment nobody has recorded yet. In fact, 2–8 hidden
+  test treatments per split were drawn as negatives, which I couldn't avoid without
+  peeking at the test set. It's acceptable because real treatments are so rare (about 1 in
+  1,400 pairs) that almost all random negatives really are negatives, and the noise only
+  makes the model's job slightly *harder*, never artificially easier.
+- **Never test on what you trained on:** the sampled negatives are removed from that split's
+  evaluation set, for all methods equally (205,590 pairs and 143–149 positives remain per split).
+
+## Results (mean ± std over 5 splits; `output/phase3_results.csv`)
+
+| Method | AUROC | AUPRC | P@20 | P@100 |
+|---|---|---|---|---|
+| random | 0.511 ± 0.030 | 0.0007 ± 0.0001 | 0.00 ± 0.00 | 0.000 ± 0.000 |
+| popularity | 0.767 ± 0.008 | 0.0199 ± 0.0031 | 0.05 ± 0.07 | 0.056 ± 0.020 |
+| shared genes | 0.747 ± 0.026 | 0.0066 ± 0.0017 | 0.07 ± 0.03 | 0.030 ± 0.010 |
+| similar drugs | 0.733 ± 0.026 | 0.0297 ± 0.0071 | 0.09 ± 0.04 | 0.082 ± 0.015 |
+| baselines-only model | 0.918 ± 0.009 | 0.1118 ± 0.0252 | 0.42 ± 0.08 | 0.220 ± 0.053 |
+| embeddings-only model | 0.888 ± 0.008 | 0.0159 ± 0.0061 | 0.06 ± 0.05 | 0.038 ± 0.011 |
+| **full model** | **0.943 ± 0.011** | **0.1175 ± 0.0383** | **0.43 ± 0.12** | 0.212 ± 0.065 |
+
+**Does the full model beat popularity beyond the noise? Yes.** It wins on every metric in
+**all 5 splits**. AUPRC is higher by +0.098 ± 0.037 on average (about 6× popularity), and
+on average 8.6 of its top 20 are hidden treatments versus 1 for popularity.
+
+**But the ablations change the story about *why*:**
+
+1. **Most of the gain comes from combining the three simple scores.** The baselines-only
+   model (3 features) is about as good as the full model on AUPRC and precision@k. I
+   checked this wasn't a training artifact: just adding up the three standardized scores,
+   with no training at all, already gives AUPRC 0.074–0.117 across the splits. The scores
+   are complementary: each alone is 0 for most pairs, so they can't rank pairs that score
+   0. Together they break those ties.
+2. **Embeddings help AUROC, not the top of the list.** Full vs baselines-only: AUROC higher
+   in 5/5 splits (+0.025 ± 0.009), but AUPRC better in only 3/5 (+0.006 ± 0.027), P@20 in
+   2/5, P@100 in 2/5. Those differences are within the noise. The embeddings help sort
+   the big middle of the list, not the top candidates a researcher would test.
+3. **Embeddings alone have a high AUROC (0.888) but low AUPRC (0.016), *below*
+   popularity.** This is the AUROC-vs-AUPRC lesson from Phase 2 again: good at pushing
+   obvious non-treatments down, not at putting real treatments at the very top.
+
+Honest summary for an interview: *"A logistic regression combining simple graph features
+beats the popularity baseline by about 6× in average precision across 5 splits. The
+DeepWalk embeddings add a consistent AUROC gain, but no reliable gain in top-of-list
+precision, so the useful signal comes mostly from the known-treatment features."*
+
+## Top new predictions (for Phase 4, not claims)
+
+`output/phase3_top15_new_predictions.csv` lists the 15 highest-scoring pairs that are not
+known treats or palliates edges. Many are "more of the same": corticosteroids for asthma
+and psoriasis, beta-blockers for hypertension, cancer drugs for other cancers. The model
+leans heavily on the similar-drugs and popularity features. The scores (around 0.997–0.999) are only
+useful for **ranking**. They are not real probabilities, because the model was trained on
+1 positive per 10 negatives, while in reality it's about 1 per 1,400. Whether any of these
+are real is for Phase 4 to check against outside evidence.

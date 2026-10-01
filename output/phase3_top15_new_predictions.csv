@@ -1,0 +1,16 @@
+compound,disease,score,popularity,shared_genes,similar_drugs,drug,disease_name
+Compound::DB00591,Disease::DOID:2841,0.9986714425855057,74,2,11,Fluocinolone Acetonide,asthma
+Compound::DB00694,Disease::DOID:1612,0.9986208325974083,29,7,3,Daunorubicin,breast cancer
+Compound::DB01222,Disease::DOID:3310,0.9985718964182597,32,0,11,Budesonide,atopic dermatitis
+Compound::DB00741,Disease::DOID:2531,0.9985054884516892,408,3,5,Hydrocortisone,hematologic cancer
+Compound::DB01260,Disease::DOID:2841,0.9984061560649331,37,1,12,Desonide,asthma
+Compound::DB01214,Disease::DOID:10763,0.9981382908858171,68,2,5,Metipranolol,hypertension
+Compound::DB04574,Disease::DOID:10283,0.9979252395972784,21,5,5,Estropipate,prostate cancer
+Compound::DB01229,Disease::DOID:10283,0.9977729634176112,84,5,2,Paclitaxel,prostate cancer
+Compound::DB01222,Disease::DOID:8893,0.997710733617976,42,0,10,Budesonide,psoriasis
+Compound::DB00541,Disease::DOID:1612,0.9975206104061225,203,5,2,Vincristine,breast cancer
+Compound::DB01210,Disease::DOID:10763,0.9974292244148841,68,2,5,Levobunolol,hypertension
+Compound::DB00764,Disease::DOID:8893,0.9972953193648879,63,0,10,Mometasone,psoriasis
+Compound::DB00731,Disease::DOID:10763,0.9971276166321574,68,5,4,Nateglinide,hypertension
+Compound::DB01064,Disease::DOID:10763,0.9970762963477775,68,5,3,Isoprenaline,hypertension
+Compound::DB01260,Disease::DOID:8893,0.9970446972633487,21,0,10,Desonide,psoriasis
