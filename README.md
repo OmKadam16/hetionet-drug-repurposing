@@ -10,12 +10,19 @@ relationships could be used to find new uses for existing drugs
 **Phase 1 – data exploration** (done): load the graph, count nodes and edges by
 type, look at the Compound-treats-Disease edges, make summary charts.
 
+**Phase 2 – fair evaluation + baselines** (done): hold out 20% of treatments as a
+test set, score all Compound × Disease pairs with 4 simple baselines (random,
+popularity, shared genes, similar drugs), report AUROC / AUPRC / precision@k.
+
 ## Project layout
 
 ```
 data/        raw Hetionet files (downloaded, NOT committed to git)
 src/         Python code
-  explore.py   loads the graph and prints/plots summary statistics
+  common.py    shared file paths, random seed and loaders
+  explore.py   Phase 1: loads the graph and prints/plots summary statistics
+  split.py     Phase 2: train/test split of treats edges + evaluation pairs
+  baselines.py Phase 2: scores and evaluates the baselines
 output/      generated charts
 ```
 
@@ -42,7 +49,9 @@ Its SHA-256 should be `611f0411ac666be4e0270e54bbca67407e14720bfc3099311f0f5eec2
 ## Run
 
 ```bash
-.venv/bin/python src/explore.py
+.venv/bin/python src/explore.py     # Phase 1
+.venv/bin/python src/split.py       # Phase 2: creates data/split/
+.venv/bin/python src/baselines.py   # Phase 2: writes output/baseline_results.csv
 ```
 
 ## Data source and license
