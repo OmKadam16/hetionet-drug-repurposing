@@ -19,6 +19,10 @@ word2vec) learned on Hetionet with all treats edges removed, a logistic regressi
 on embedding + baseline features, two ablations, all evaluated over 5 random
 splits (mean ± std). Lists the model's top new candidate pairs.
 
+**Phase 4 – explanations + reality check** (done): for the top 15 new predictions,
+feature contributions and the most specific supporting Hetionet paths, plus a check
+against FDA labels, ClinicalTrials.gov and PubMed (with source links).
+
 ## Project layout
 
 ```
@@ -30,6 +34,7 @@ src/         Python code
   baselines.py Phase 2: scores and evaluates the baselines
   embed.py     Phase 3: DeepWalk node embeddings (treats-free graph)
   model.py     Phase 3: logistic regression, ablations, 5-split evaluation
+  explain.py   Phase 4: feature contributions + supporting paths for top predictions
 output/      generated charts
 ```
 
@@ -63,7 +68,11 @@ Its SHA-256 should be `611f0411ac666be4e0270e54bbca67407e14720bfc3099311f0f5eec2
 .venv/bin/python src/baselines.py   # Phase 2: writes output/baseline_results.csv
 .venv/bin/python src/embed.py       # Phase 3: ~5 min, writes data/embeddings/
 .venv/bin/python src/model.py       # Phase 3: writes output/phase3_*.csv/png
+.venv/bin/python src/explain.py     # Phase 4: writes output/phase4_explanations.md
 ```
+
+`output/phase4_reality_check.csv` was curated by hand from public sources (links in
+the file); `explain.py` merges it into the report.
 
 ## Data source and license
 

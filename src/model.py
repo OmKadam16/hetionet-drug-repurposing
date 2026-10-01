@@ -172,6 +172,37 @@ def run_split(seed, nodes, edges, all_pairs, cpd_keys):
 
 
 # ---------------------------------------------------------------------------
+# Final model (all 755 treatments) - also used by explain.py
+# ---------------------------------------------------------------------------
+
+
+def train_final_model(nodes, edges):
+    """Train the full model on ALL 755 treatments (embeddings from walk seed 0)
+    and score every pair that is not already a known treats or palliates edge.
+
+    Returns (classifier, feature column names, new_pairs with "score", X_new).
+    """
+    compounds = nodes.loc[nodes["kind"] == "Compound", "id"].rename("compound")
+    diseases = nodes.loc[nodes["kind"] == "Disease", "id"].rename("disease")
+    all_pairs = pd.merge(compounds, diseases, how="cross")
+    ctd = edges_of_type(edges, "CtD").rename(columns={"source": "compound", "target": "disease"})
+    cpd = edges_of_type(edges, "CpD").rename(columns={"source": "compound", "target": "disease"})
+    ctd_keys, cpd_keys = set(pair_key(ctd)), set(pair_key(cpd))
+    graph = edges[edges["metaedge"] != "CtD"]
+    vectors = load_embeddings("seed0")
+
+    train_pairs, y_train = sample_training_pairs(all_pairs, ctd, ctd_keys | cpd_keys, seed=0)
+    X_train = feature_table(train_pairs, ctd, graph, ctd_keys, vectors)
+    cols = feature_columns("full", X_train)
+    clf = make_classifier().fit(X_train[cols], y_train)
+
+    new_pairs = all_pairs[~pair_key(all_pairs).isin(ctd_keys | cpd_keys)].reset_index(drop=True)
+    X_new = feature_table(new_pairs, ctd, graph, set(), vectors)
+    new_pairs["score"] = clf.predict_proba(X_new[cols])[:, 1]
+    return clf, cols, new_pairs, X_new
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -231,19 +262,7 @@ def main():
     plt.close(fig)
 
     # --- 4. Final model on the full graph -> new predictions -----------------
-    # Train on ALL 755 treatments (embeddings from walk seed 0), then score
-    # every pair that is not already a known treats or palliates edge.
-    graph = edges[edges["metaedge"] != "CtD"]
-    ctd_keys = set(pair_key(ctd))
-    vectors = load_embeddings("seed0")
-    train_pairs, y_train = sample_training_pairs(all_pairs, ctd, ctd_keys | cpd_keys, seed=0)
-    X_train = feature_table(train_pairs, ctd, graph, ctd_keys, vectors)
-    cols = feature_columns("full", X_train)
-    clf = make_classifier().fit(X_train[cols], y_train)
-
-    new_pairs = all_pairs[~pair_key(all_pairs).isin(ctd_keys | cpd_keys)].reset_index(drop=True)
-    X_new = feature_table(new_pairs, ctd, graph, set(), vectors)
-    new_pairs["score"] = clf.predict_proba(X_new[cols])[:, 1]
+    clf, cols, new_pairs, X_new = train_final_model(nodes, edges)
     new_pairs[BASELINE_FEATURES] = np.expm1(X_new[BASELINE_FEATURES]).round().astype(int)
     id_to_name = dict(zip(nodes["id"], nodes["name"]))
     new_pairs["drug"] = new_pairs["compound"].map(id_to_name)

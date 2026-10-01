@@ -1,0 +1,210 @@
+rank,type,path,weight
+1,B similar drug,Fluocinolone Acetonide -resembles- Fluticasone furoate -treats-> asthma,0.10540925533894598
+1,B similar drug,Fluocinolone Acetonide -resembles- Beclomethasone -treats-> asthma,0.1
+1,D similar disease,Fluocinolone Acetonide -treats-> atopic dermatitis -resembles- asthma,0.08873565094161137
+1,B similar drug,Fluocinolone Acetonide -resembles- Mometasone -treats-> asthma,0.0827605888602368
+1,B similar drug,Fluocinolone Acetonide -resembles- Prednisolone -treats-> asthma,0.06950480468569159
+1,B similar drug,Fluocinolone Acetonide -resembles- Flunisolide -treats-> asthma,0.06523280730534423
+1,B similar drug,Fluocinolone Acetonide -resembles- Methylprednisolone -treats-> asthma,0.05913123959890826
+1,B similar drug,Fluocinolone Acetonide -resembles- Fluticasone Propionate -treats-> asthma,0.05892556509887896
+1,B similar drug,Fluocinolone Acetonide -resembles- Triamcinolone -treats-> asthma,0.0584206237836986
+1,B similar drug,Fluocinolone Acetonide -resembles- Budesonide -treats-> asthma,0.05070201265633938
+1,A shared gene,Fluocinolone Acetonide -binds-> PLA2G4A (gene) <-associates- asthma,0.04181210050035454
+1,B similar drug,Fluocinolone Acetonide -resembles- Betamethasone -treats-> asthma,0.038662233651352955
+1,B similar drug,Fluocinolone Acetonide -resembles- Dexamethasone -treats-> asthma,0.038014296063485276
+1,A shared gene,Fluocinolone Acetonide -binds-> NR3C1 (gene) <-associates- asthma,0.03724194613619293
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisolone -treats-> asthma,0.014818474149146235
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Methylprednisolone -treats-> asthma,0.01260682264148248
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Fluticasone Propionate -treats-> asthma,0.012562972690740151
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Triamcinolone -treats-> asthma,0.012455318840626154
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Hydrocortisone -treats-> asthma,0.01189970358207561
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisone -treats-> asthma,0.01189970358207561
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Budesonide -treats-> asthma,0.010809705419002783
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Betamethasone -treats-> asthma,0.008242815910376438
+1,C same drug class,Fluocinolone Acetonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Dexamethasone -treats-> asthma,0.008104675152489322
+2,A shared gene,Daunorubicin -binds-> ABCC1 (gene) <-associates- breast cancer,0.07580980435789034
+2,A shared gene,Daunorubicin -binds-> ABCG2 (gene) <-associates- breast cancer,0.06741998624632421
+2,A shared gene,Daunorubicin -binds-> CYP1B1 (gene) <-associates- breast cancer,0.0576390417704235
+2,A shared gene,Daunorubicin -binds-> CYP1A1 (gene) <-associates- breast cancer,0.05076730825668095
+2,A shared gene,Daunorubicin -binds-> ABCB1 (gene) <-associates- breast cancer,0.04343722427630694
+2,B similar drug,Daunorubicin -resembles- Idarubicin -treats-> breast cancer,0.0404888165089458
+2,A shared gene,Daunorubicin -binds-> CYP3A4 (gene) <-associates- breast cancer,0.03949762527666822
+2,A shared gene,Daunorubicin -binds-> TOP2A (gene) <-associates- breast cancer,0.03477340712103605
+2,B similar drug,Daunorubicin -resembles- Epirubicin -treats-> breast cancer,0.031023602427884885
+2,B similar drug,Daunorubicin -resembles- Doxorubicin -treats-> breast cancer,0.030628194591584442
+2,C same drug class,Daunorubicin <-in- Anthracyclines (class) -in-> Idarubicin -treats-> breast cancer,0.0202444082544729
+2,C same drug class,Daunorubicin <-in- Anthracyclines (class) -in-> Epirubicin -treats-> breast cancer,0.015511801213942442
+2,C same drug class,Daunorubicin <-in- Anthracyclines (class) -in-> Doxorubicin -treats-> breast cancer,0.015314097295792221
+2,C same drug class,Daunorubicin <-in- Topoisomerase Inhibitors (class) -in-> Idarubicin -treats-> breast cancer,0.0134962721696486
+2,C same drug class,Daunorubicin <-in- Topoisomerase Inhibitors (class) -in-> Irinotecan -treats-> breast cancer,0.012849055741528328
+2,C same drug class,Daunorubicin <-in- Topoisomerase Inhibitors (class) -in-> Mitoxantrone -treats-> breast cancer,0.01264405403018136
+2,C same drug class,Daunorubicin <-in- Topoisomerase Inhibitors (class) -in-> Epirubicin -treats-> breast cancer,0.010341200809294961
+2,C same drug class,Daunorubicin <-in- Topoisomerase Inhibitors (class) -in-> Doxorubicin -treats-> breast cancer,0.010209398197194814
+3,B similar drug,Budesonide -resembles- Desonide -treats-> atopic dermatitis,0.10783277320343841
+3,B similar drug,Budesonide -resembles- Fluocinonide -treats-> atopic dermatitis,0.09407208683835973
+3,B similar drug,Budesonide -resembles- Mometasone -treats-> atopic dermatitis,0.0827605888602368
+3,B similar drug,Budesonide -resembles- Prednisolone -treats-> atopic dermatitis,0.06950480468569159
+3,B similar drug,Budesonide -resembles- Fluocinolone Acetonide -treats-> atopic dermatitis,0.06454972243679027
+3,B similar drug,Budesonide -resembles- Methylprednisolone -treats-> atopic dermatitis,0.05913123959890826
+3,B similar drug,Budesonide -resembles- Triamcinolone -treats-> atopic dermatitis,0.0584206237836986
+3,D similar disease,Budesonide -treats-> asthma -resembles- atopic dermatitis,0.05607721540920443
+3,B similar drug,Budesonide -resembles- Hydrocortisone -treats-> atopic dermatitis,0.055814557218594754
+3,B similar drug,Budesonide -resembles- Prednisone -treats-> atopic dermatitis,0.055814557218594754
+3,B similar drug,Budesonide -resembles- Betamethasone -treats-> atopic dermatitis,0.038662233651352955
+3,B similar drug,Budesonide -resembles- Dexamethasone -treats-> atopic dermatitis,0.038014296063485276
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Desonide -treats-> atopic dermatitis,0.022990024493585143
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Fluocinonide -treats-> atopic dermatitis,0.020056236303005487
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisolone -treats-> atopic dermatitis,0.014818474149146235
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Fluocinolone Acetonide -treats-> atopic dermatitis,0.013762047064079507
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Methylprednisolone -treats-> atopic dermatitis,0.01260682264148248
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Triamcinolone -treats-> atopic dermatitis,0.012455318840626154
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Hydrocortisone -treats-> atopic dermatitis,0.01189970358207561
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisone -treats-> atopic dermatitis,0.01189970358207561
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Betamethasone -treats-> atopic dermatitis,0.008242815910376438
+3,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Dexamethasone -treats-> atopic dermatitis,0.008104675152489322
+4,B similar drug,Hydrocortisone -resembles- Prednisolone -treats-> hematologic cancer,0.06950480468569159
+4,A shared gene,Hydrocortisone -binds-> ABCG2 (gene) <-associates- hematologic cancer,0.06741998624632421
+4,B similar drug,Hydrocortisone -resembles- Triamcinolone -treats-> hematologic cancer,0.0584206237836986
+4,B similar drug,Hydrocortisone -resembles- Prednisone -treats-> hematologic cancer,0.055814557218594754
+4,A shared gene,Hydrocortisone -binds-> ABCB1 (gene) <-associates- hematologic cancer,0.04343722427630694
+4,B similar drug,Hydrocortisone -resembles- Betamethasone -treats-> hematologic cancer,0.038662233651352955
+4,B similar drug,Hydrocortisone -resembles- Dexamethasone -treats-> hematologic cancer,0.038014296063485276
+4,A shared gene,Hydrocortisone -binds-> NR3C1 (gene) <-associates- hematologic cancer,0.03724194613619293
+4,C same drug class,Hydrocortisone <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisolone -treats-> hematologic cancer,0.014818474149146235
+4,C same drug class,Hydrocortisone <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Triamcinolone -treats-> hematologic cancer,0.012455318840626154
+4,C same drug class,Hydrocortisone <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisone -treats-> hematologic cancer,0.01189970358207561
+4,C same drug class,Hydrocortisone <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Betamethasone -treats-> hematologic cancer,0.008242815910376438
+4,C same drug class,Hydrocortisone <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Dexamethasone -treats-> hematologic cancer,0.008104675152489322
+5,B similar drug,Desonide -resembles- Beclomethasone -treats-> asthma,0.1
+5,B similar drug,Desonide -resembles- Ciclesonide -treats-> asthma,0.09053574604251853
+5,D similar disease,Desonide -treats-> atopic dermatitis -resembles- asthma,0.08873565094161137
+5,B similar drug,Desonide -resembles- Mometasone -treats-> asthma,0.0827605888602368
+5,B similar drug,Desonide -resembles- Prednisolone -treats-> asthma,0.06950480468569159
+5,B similar drug,Desonide -resembles- Flunisolide -treats-> asthma,0.06523280730534423
+5,B similar drug,Desonide -resembles- Methylprednisolone -treats-> asthma,0.05913123959890826
+5,B similar drug,Desonide -resembles- Triamcinolone -treats-> asthma,0.0584206237836986
+5,B similar drug,Desonide -resembles- Hydrocortisone -treats-> asthma,0.055814557218594754
+5,B similar drug,Desonide -resembles- Prednisone -treats-> asthma,0.055814557218594754
+5,B similar drug,Desonide -resembles- Budesonide -treats-> asthma,0.05070201265633938
+5,B similar drug,Desonide -resembles- Betamethasone -treats-> asthma,0.038662233651352955
+5,B similar drug,Desonide -resembles- Dexamethasone -treats-> asthma,0.038014296063485276
+5,A shared gene,Desonide -binds-> NR3C1 (gene) <-associates- asthma,0.03724194613619293
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisolone -treats-> asthma,0.014818474149146235
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Methylprednisolone -treats-> asthma,0.01260682264148248
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Fluticasone Propionate -treats-> asthma,0.012562972690740151
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Triamcinolone -treats-> asthma,0.012455318840626154
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Hydrocortisone -treats-> asthma,0.01189970358207561
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisone -treats-> asthma,0.01189970358207561
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Budesonide -treats-> asthma,0.010809705419002783
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Betamethasone -treats-> asthma,0.008242815910376438
+5,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Dexamethasone -treats-> asthma,0.008104675152489322
+6,B similar drug,Metipranolol -resembles- Acebutolol -treats-> hypertension,0.08247860988423225
+6,B similar drug,Metipranolol -resembles- Esmolol -treats-> hypertension,0.08032193289024989
+6,B similar drug,Metipranolol -resembles- Propranolol -treats-> hypertension,0.07856742013183861
+6,B similar drug,Metipranolol -resembles- Pindolol -treats-> hypertension,0.0708881205008336
+6,B similar drug,Metipranolol -resembles- Metoprolol -treats-> hypertension,0.06917144638660747
+6,A shared gene,Metipranolol -binds-> ADRB1 (gene) <-associates- hypertension,0.06375767130633384
+6,A shared gene,Metipranolol -binds-> ADRB2 (gene) <-associates- hypertension,0.03500700210070024
+7,B similar drug,Estropipate -resembles- Estramustine -treats-> prostate cancer,0.10846522890932808
+7,B similar drug,Estropipate -resembles- Estrone -treats-> prostate cancer,0.09325048082403138
+7,A shared gene,Estropipate -binds-> SHBG (gene) <-associates- prostate cancer,0.08703882797784893
+7,A shared gene,Estropipate -binds-> SLC22A1 (gene) <-associates- prostate cancer,0.07980868844676221
+7,B similar drug,Estropipate -resembles- Ethinyl Estradiol -treats-> prostate cancer,0.07198157507486945
+7,B similar drug,Estropipate -resembles- Conjugated Estrogens -treats-> prostate cancer,0.0576390417704235
+7,A shared gene,Estropipate -binds-> ESR2 (gene) <-associates- prostate cancer,0.04343722427630694
+7,A shared gene,Estropipate -binds-> CYP3A4 (gene) <-associates- prostate cancer,0.03949762527666822
+7,B similar drug,Estropipate -resembles- Estradiol -treats-> prostate cancer,0.037688918072220454
+7,A shared gene,Estropipate -binds-> ESR1 (gene) <-associates- prostate cancer,0.02774568328089315
+8,B similar drug,Paclitaxel -resembles- Cabazitaxel -treats-> prostate cancer,0.07955572841757301
+8,A shared gene,Paclitaxel -binds-> CYP19A1 (gene) <-associates- prostate cancer,0.07715167498104596
+8,A shared gene,Paclitaxel -binds-> CYP3A5 (gene) <-associates- prostate cancer,0.05954913341754137
+8,A shared gene,Paclitaxel -binds-> CYP1B1 (gene) <-associates- prostate cancer,0.0576390417704235
+8,B similar drug,Paclitaxel -resembles- Docetaxel -treats-> prostate cancer,0.05070201265633938
+8,A shared gene,Paclitaxel -binds-> CYP3A4 (gene) <-associates- prostate cancer,0.03949762527666822
+8,C same drug class,Paclitaxel <-in- Microtubule Inhibition (class) -in-> Cabazitaxel -treats-> prostate cancer,0.032478490123081544
+8,A shared gene,Paclitaxel -binds-> BCL2 (gene) <-associates- prostate cancer,0.0316069770620507
+8,C same drug class,Paclitaxel <-in- Microtubule Inhibition (class) -in-> Docetaxel -treats-> prostate cancer,0.0206990099900277
+9,B similar drug,Budesonide -resembles- Beclomethasone -treats-> psoriasis,0.1
+9,B similar drug,Budesonide -resembles- Fluocinonide -treats-> psoriasis,0.09407208683835973
+9,B similar drug,Budesonide -resembles- Clobetasol propionate -treats-> psoriasis,0.07692307692307693
+9,B similar drug,Budesonide -resembles- Prednisolone -treats-> psoriasis,0.06950480468569159
+9,B similar drug,Budesonide -resembles- Fluocinolone Acetonide -treats-> psoriasis,0.06454972243679027
+9,B similar drug,Budesonide -resembles- Triamcinolone -treats-> psoriasis,0.0584206237836986
+9,B similar drug,Budesonide -resembles- Hydrocortisone -treats-> psoriasis,0.055814557218594754
+9,B similar drug,Budesonide -resembles- Prednisone -treats-> psoriasis,0.055814557218594754
+9,B similar drug,Budesonide -resembles- Betamethasone -treats-> psoriasis,0.038662233651352955
+9,B similar drug,Budesonide -resembles- Dexamethasone -treats-> psoriasis,0.038014296063485276
+9,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Fluocinonide -treats-> psoriasis,0.020056236303005487
+9,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisolone -treats-> psoriasis,0.014818474149146235
+9,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Fluocinolone Acetonide -treats-> psoriasis,0.013762047064079507
+9,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Triamcinolone -treats-> psoriasis,0.012455318840626154
+9,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Hydrocortisone -treats-> psoriasis,0.01189970358207561
+9,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisone -treats-> psoriasis,0.01189970358207561
+9,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Betamethasone -treats-> psoriasis,0.008242815910376438
+9,C same drug class,Budesonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Dexamethasone -treats-> psoriasis,0.008104675152489322
+10,A shared gene,Vincristine -binds-> ABCC1 (gene) <-associates- breast cancer,0.07580980435789034
+10,A shared gene,Vincristine -binds-> ABCG2 (gene) <-associates- breast cancer,0.06741998624632421
+10,A shared gene,Vincristine -binds-> TUBB3 (gene) <-associates- breast cancer,0.05447347107028433
+10,B similar drug,Vincristine -resembles- Vinorelbine -treats-> breast cancer,0.050251890762960605
+10,A shared gene,Vincristine -binds-> ABCB1 (gene) <-associates- breast cancer,0.04343722427630694
+10,B similar drug,Vincristine -resembles- Vinblastine -treats-> breast cancer,0.04103049699311091
+10,D similar disease,Vincristine -treats-> colon cancer -resembles- breast cancer,0.039746431675858215
+10,A shared gene,Vincristine -binds-> CYP3A4 (gene) <-associates- breast cancer,0.03949762527666822
+10,C same drug class,Vincristine <-in- Vinca Alkaloids (class) -in-> Vinorelbine -treats-> breast cancer,0.029012942659282972
+10,C same drug class,Vincristine <-in- Vinca Alkaloids (class) -in-> Vinblastine -treats-> breast cancer,0.023688968483956716
+11,B similar drug,Levobunolol -resembles- Penbutolol -treats-> hypertension,0.13483997249264842
+11,B similar drug,Levobunolol -resembles- Nadolol -treats-> hypertension,0.09166984970282113
+11,B similar drug,Levobunolol -resembles- Propranolol -treats-> hypertension,0.07856742013183861
+11,B similar drug,Levobunolol -resembles- Pindolol -treats-> hypertension,0.0708881205008336
+11,B similar drug,Levobunolol -resembles- Timolol -treats-> hypertension,0.06495698024616309
+11,A shared gene,Levobunolol -binds-> ADRB1 (gene) <-associates- hypertension,0.06375767130633384
+11,A shared gene,Levobunolol -binds-> ADRB2 (gene) <-associates- hypertension,0.03500700210070024
+12,B similar drug,Mometasone -resembles- Beclomethasone -treats-> psoriasis,0.1
+12,B similar drug,Mometasone -resembles- Fluocinonide -treats-> psoriasis,0.09407208683835973
+12,D similar disease,Mometasone -treats-> atopic dermatitis -resembles- psoriasis,0.08873565094161137
+12,B similar drug,Mometasone -resembles- Clobetasol propionate -treats-> psoriasis,0.07692307692307693
+12,B similar drug,Mometasone -resembles- Prednisolone -treats-> psoriasis,0.06950480468569159
+12,B similar drug,Mometasone -resembles- Fluocinolone Acetonide -treats-> psoriasis,0.06454972243679027
+12,B similar drug,Mometasone -resembles- Triamcinolone -treats-> psoriasis,0.0584206237836986
+12,B similar drug,Mometasone -resembles- Hydrocortisone -treats-> psoriasis,0.055814557218594754
+12,B similar drug,Mometasone -resembles- Prednisone -treats-> psoriasis,0.055814557218594754
+12,D similar disease,Mometasone -treats-> systemic scleroderma -resembles- psoriasis,0.039344473768231684
+12,B similar drug,Mometasone -resembles- Betamethasone -treats-> psoriasis,0.038662233651352955
+12,B similar drug,Mometasone -resembles- Dexamethasone -treats-> psoriasis,0.038014296063485276
+13,B similar drug,Nateglinide -resembles- Trandolapril -treats-> hypertension,0.06788442333021306
+13,B similar drug,Nateglinide -resembles- Ramipril -treats-> hypertension,0.0663723311599972
+13,B similar drug,Nateglinide -resembles- Enalapril -treats-> hypertension,0.062136976600120006
+13,A shared gene,Nateglinide -binds-> PTGS1 (gene) <-associates- hypertension,0.05965499862718936
+13,A shared gene,Nateglinide -binds-> CYP3A5 (gene) <-associates- hypertension,0.05954913341754137
+13,A shared gene,Nateglinide -binds-> KCNJ11 (gene) <-associates- hypertension,0.0594438298277764
+13,B similar drug,Nateglinide -resembles- Lisinopril -treats-> hypertension,0.05933908290969267
+13,D similar disease,Nateglinide -treats-> type 2 diabetes mellitus -resembles- hypertension,0.052851642258169
+13,A shared gene,Nateglinide -binds-> ALB (gene) <-associates- hypertension,0.042333375666730164
+13,A shared gene,Nateglinide -binds-> PPARG (gene) <-associates- hypertension,0.036060922298730945
+14,B similar drug,Isoprenaline -resembles- Labetalol -treats-> hypertension,0.07881104062391006
+14,B similar drug,Isoprenaline -resembles- Pindolol -treats-> hypertension,0.0708881205008336
+14,B similar drug,Isoprenaline -resembles- Methyldopa -treats-> hypertension,0.06868028197434452
+14,A shared gene,Isoprenaline -binds-> ADRB1 (gene) <-associates- hypertension,0.06375767130633384
+14,A shared gene,Isoprenaline -binds-> ADRBK1 (gene) <-associates- hypertension,0.05976143046671968
+14,A shared gene,Isoprenaline -binds-> CYP1A1 (gene) <-associates- hypertension,0.05076730825668095
+14,A shared gene,Isoprenaline -binds-> ADRB2 (gene) <-associates- hypertension,0.03500700210070024
+14,A shared gene,Isoprenaline -binds-> PIK3R1 (gene) <-associates- hypertension,0.03220783132004154
+15,B similar drug,Desonide -resembles- Beclomethasone -treats-> psoriasis,0.1
+15,B similar drug,Desonide -resembles- Fluocinonide -treats-> psoriasis,0.09407208683835973
+15,D similar disease,Desonide -treats-> atopic dermatitis -resembles- psoriasis,0.08873565094161137
+15,B similar drug,Desonide -resembles- Clobetasol propionate -treats-> psoriasis,0.07692307692307693
+15,B similar drug,Desonide -resembles- Prednisolone -treats-> psoriasis,0.06950480468569159
+15,B similar drug,Desonide -resembles- Fluocinolone Acetonide -treats-> psoriasis,0.06454972243679027
+15,B similar drug,Desonide -resembles- Triamcinolone -treats-> psoriasis,0.0584206237836986
+15,B similar drug,Desonide -resembles- Hydrocortisone -treats-> psoriasis,0.055814557218594754
+15,B similar drug,Desonide -resembles- Prednisone -treats-> psoriasis,0.055814557218594754
+15,B similar drug,Desonide -resembles- Betamethasone -treats-> psoriasis,0.038662233651352955
+15,B similar drug,Desonide -resembles- Dexamethasone -treats-> psoriasis,0.038014296063485276
+15,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Fluocinonide -treats-> psoriasis,0.020056236303005487
+15,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisolone -treats-> psoriasis,0.014818474149146235
+15,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Fluocinolone Acetonide -treats-> psoriasis,0.013762047064079507
+15,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Triamcinolone -treats-> psoriasis,0.012455318840626154
+15,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Hydrocortisone -treats-> psoriasis,0.01189970358207561
+15,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Prednisone -treats-> psoriasis,0.01189970358207561
+15,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Betamethasone -treats-> psoriasis,0.008242815910376438
+15,C same drug class,Desonide <-in- Corticosteroid Hormone Receptor Agonists (class) -in-> Dexamethasone -treats-> psoriasis,0.008104675152489322

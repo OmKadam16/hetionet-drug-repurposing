@@ -277,3 +277,96 @@ leans heavily on the similar-drugs and popularity features. The scores (around 0
 useful for **ranking**. They are not real probabilities, because the model was trained on
 1 positive per 10 negatives, while in reality it's about 1 per 1,400. Whether any of these
 are real is for Phase 4 to check against outside evidence.
+
+---
+
+# Phase 4: what I learned
+
+## Explaining a prediction
+
+For each of the top 15 predictions I gave two kinds of explanation
+(`output/phase4_explanations.md`, made by `src/explain.py`):
+
+1. **What the model used.** Logistic regression adds up *weight × feature value*, so I
+   can split every score exactly into four parts: popularity, shared genes, similar
+   drugs and embedding. **For all 15, "similar drugs" was the biggest contributor.**
+2. **What a biologist can check.** I listed the actual paths in Hetionet that connect the
+   drug to the disease, e.g. *Hydrocortisone –resembles– Prednisolone –treats→
+   hematologic cancer*. Paths are ranked by **specificity**: a path through a hub (a gene
+   connected to thousands of things) counts less than a path through a node with
+   few connections. I checked that the path counts match the model's feature values
+   exactly, so the explanation and the model describe the same thing.
+
+**What makes a prediction explainable:** the score can be split into named,
+understandable parts, and each part points to concrete facts (edges) that someone can look
+up and disagree with. The 64 embedding numbers are the opposite. They help AUROC, but
+"dimension 37 was high" means nothing to a biologist. In this model the embeddings
+contribute relatively little to these top predictions, so I could explain them well.
+
+**Why biologists care:** testing a repurposing idea costs months and real money. Nobody
+will run an experiment because "the score was 0.998". They will if you can say
+"this drug binds the same receptor as three approved drugs for this disease". An explanation
+also lets an expert spot nonsense quickly, which turned out to matter a lot here.
+
+## Reality check (`output/phase4_reality_check.csv`)
+
+I searched FDA drug labels (openFDA/DailyMed), ClinicalTrials.gov and PubMed for each pair,
+through their public APIs, and labelled each with a source link:
+
+| Label | Count |
+|---|---|
+| already used/approved | 1 |
+| in clinical trials | 6 |
+| some published evidence | 1 |
+| no evidence found | 7 |
+
+My honest reading:
+
+- **1 known use that Hetionet is missing:** hydrocortisone for leukemias/lymphomas is on the
+  FDA label, but as *palliative* management. So it's arguably a "palliates" edge rather than "treats".
+- **6 pairs already tested in humans:** daunorubicin and vincristine for breast cancer,
+  paclitaxel for prostate cancer, and budesonide, mometasone and desonide for psoriasis.
+  This is a good sign the model finds clinically sensible pairs. But "tested" doesn't mean
+  "works", and most of these are close relatives of drugs already used for that disease
+  (other anthracyclines, other taxanes, other topical steroids). They're "more of the same",
+  not surprising discoveries.
+- **2 plausible new ideas:** budesonide for atopic dermatitis (only a 2024 formulation
+  study) and estropipate for prostate cancer (no direct evidence, but Hetionet lists other
+  estrogens as prostate cancer treatments).
+- **6 look like bias or artifacts:**
+  - fluocinolone and desonide for **asthma**: skin creams that resemble asthma inhalers chemically;
+  - metipranolol and levobunolol for **hypertension**: beta-blocker **eye drops** for raised
+    *eye* pressure;
+  - nateglinide for hypertension: a diabetes drug that happens to chemically resemble ACE inhibitors;
+  - isoprenaline for hypertension: it *stimulates* the beta receptors that beta-blockers *block*.
+
+So, roughly half of the top 15 have real-world support, and about 40% (6 of 15) are wrong for
+reasons a pharmacist would spot quickly.
+
+## Traps I hit while checking (and how I avoided them)
+
+- **Name clashes:** an FDA label "matched" levobunolol + hypertension, but it said *ocular*
+  hypertension. A text match is not evidence. I had to read the label.
+- **Search term expansion:** ClinicalTrials.gov returned 560 "daunorubicin + breast cancer"
+  trials because it expands search terms. Restricting to the intervention and condition fields gave 1 real trial.
+- **Registry errors:** one trial listed "vincristine 40 mg", a dose that doesn't fit
+  vincristine. I didn't count it.
+- **"No evidence found" ≠ "doesn't work".** It only means my searches found nothing.
+
+## The popularity-bias limitation
+
+The model rewards drugs and diseases that already have many known treatments, and drugs that
+*look like* existing treatments. Hypertension (many drugs) and steroid-treated
+diseases dominate the top 15. That produces safe, unsurprising predictions, and it
+also produces confident nonsense, because Hetionet has no notion of:
+
+- **formulation / route:** a skin cream, an eye drop and an inhaler of related steroids
+  are all just "Compound";
+- **direction of effect:** "binds" doesn't say whether a drug switches a receptor on or off
+  (isoprenaline vs beta-blockers);
+- **specific vs generic genes:** many "shared gene" paths go through drug-metabolism genes
+  (CYP3A4, ABCB1, ALB) that almost every drug touches, not disease biology.
+
+Ideas for fixing this: penalize popularity directly (or evaluate on drugs and diseases with few
+known treatments), drop or down-weight hub genes, and filter predictions by route of
+administration using an outside source such as the FDA labels.
