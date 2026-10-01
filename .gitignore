@@ -1,0 +1,14 @@
+# Raw data files (downloaded from Hetionet, too big / not ours to commit)
+data/
+*.tsv
+*.sif.gz
+*.gz
+
+# Python virtual environment and caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
