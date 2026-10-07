@@ -1,8 +1,8 @@
 Walk graph: 2,249,442 edges (all 755 treats edges removed)
-seed 0: nodes without edges=1873  time=53s  peak memory=592 MB
-seed 1: nodes without edges=1873  time=50s  peak memory=639 MB
-seed 2: nodes without edges=1873  time=50s  peak memory=653 MB
-seed 3: nodes without edges=1873  time=53s  peak memory=653 MB
-seed 4: nodes without edges=1873  time=50s  peak memory=760 MB
+seed 0: nodes without edges=1873  time=49s  peak memory=786 MB
+seed 1: nodes without edges=1873  time=56s  peak memory=786 MB
+seed 2: nodes without edges=1873  time=53s  peak memory=786 MB
+seed 3: nodes without edges=1873  time=55s  peak memory=786 MB
+seed 4: nodes without edges=1873  time=49s  peak memory=808 MB
 
-Total time: 255s. Saved to /Users/omkadam/Documents/Om Kadam/PROJECTS/hetionet-drug-repurposing/data/embeddings/
+Total time: 262s. Saved to /Users/omkadam/Documents/Om Kadam/PROJECTS/hetionet-drug-repurposing/data/embeddings/

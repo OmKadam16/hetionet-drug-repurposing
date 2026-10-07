@@ -32,7 +32,7 @@ Because the walk graph is the same for every split, we learn one embedding
 per random seed (0-4): split s uses seed s, so the spread of the results over
 5 splits also includes the randomness of the walks. The final model uses seed 0.
 
-Outputs: data/embeddings/seed{0..4}.npz
+Outputs: data/embeddings/seed{0..4}.npz, output/embed_log.txt (time and memory)
 
 Run:  .venv/bin/python src/embed.py      (~1 minute per seed on an M3 Air)
 """
@@ -44,7 +44,7 @@ import numpy as np
 import pandas as pd
 from gensim.models import Word2Vec
 
-from common import EMBED_DIR, SPLIT_SEEDS, load_edges, load_nodes
+from common import EMBED_DIR, OUTPUT_DIR, SPLIT_SEEDS, load_edges, load_nodes
 
 # --- Settings ---------------------------------------------------------------
 WALKS_PER_NODE = 10  # how many walks start at each node
@@ -148,18 +148,25 @@ def main():
     # The walk graph: every edge EXCEPT Compound-treats-Disease.
     graph = edges[edges["metaedge"] != "CtD"]
     assert not (graph["metaedge"] == "CtD").any()
-    print(f"Walk graph: {len(graph):,} edges (all {len(edges) - len(graph)} treats edges removed)")
+    log_lines = []
+
+    def log(line):
+        print(line, flush=True)
+        log_lines.append(line)
+
+    log(f"Walk graph: {len(graph):,} edges (all {len(edges) - len(graph)} treats edges removed)")
 
     total_start = time.perf_counter()
     for seed in SPLIT_SEEDS:
         start = time.perf_counter()
         vectors, n_isolated = learn_embeddings(graph, node_ids, seed)
         np.savez_compressed(embedding_file(f"seed{seed}"), vectors=vectors, ids=node_ids.astype(str))
-        print(f"seed {seed}: nodes without edges={n_isolated}  "
-              f"time={time.perf_counter() - start:.0f}s  peak memory={peak_memory_mb():.0f} MB",
-              flush=True)
+        log(f"seed {seed}: nodes without edges={n_isolated}  "
+              f"time={time.perf_counter() - start:.0f}s  peak memory={peak_memory_mb():.0f} MB")
 
-    print(f"\nTotal time: {time.perf_counter() - total_start:.0f}s. Saved to {EMBED_DIR}/")
+    log(f"\nTotal time: {time.perf_counter() - total_start:.0f}s. Saved to {EMBED_DIR}/")
+    # Times and memory vary a little between runs; the embeddings themselves don't.
+    (OUTPUT_DIR / "embed_log.txt").write_text("\n".join(log_lines) + "\n")
 
 
 if __name__ == "__main__":
